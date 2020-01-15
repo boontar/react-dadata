@@ -87,7 +87,7 @@ export declare namespace ReactDadata {
         timezone: null;
         unparsed_parts: null;
     };
-    type BoundsType = 'region' | 'area' | 'city' | 'settlement' | 'street' | 'house';
+    type BoundsType = 'region' | 'area' | 'city' | 'settlement' | 'street' | 'house' | 'flat';
     interface Props {
         token: string;
         placeholder?: string;
@@ -96,11 +96,16 @@ export declare namespace ReactDadata {
         count?: number;
         onChange?: (suggestion: DadataSuggestion) => void;
         autocomplete?: string;
+        onBlur?: () => void;
+        onFocus?: () => void;
         validate?: (value: string) => void;
         className?: string;
         disabled?: boolean;
         fromBound?: BoundsType;
         toBound?: BoundsType;
+        _fromBound: string;
+        _toBound: string;
+        id: string;
         address?: DadataSuggestion;
     }
     interface State {

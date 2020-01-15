@@ -25,15 +25,34 @@ var ReactDadata = /** @class */ (function (_super) {
             if (_this.state.suggestions.length == 0) {
                 _this.fetchSuggestions();
             }
+            if (_this.props.onFocus) {
+                _this.props.onFocus()
+            }
         };
         _this.onInputBlur = function () {
             _this.setState({ inputFocused: false });
             if (_this.state.suggestions.length == 0) {
                 _this.fetchSuggestions();
             }
+            if (_this.props.onBlur) {
+                _this.props.onBlur()
+            }
         };
         _this.onInputChange = function (event) {
             var value = event.target.value;
+            // var region = document.getElementById('region').value.length
+            // var city = document.getElementById('city').value.length
+            // var street = document.getElementById('street').value.length
+            // var house = document.getElementById('house').value.length
+            // if (region == 0 && city == 0 && street == 0 && house == 0 && _this.props.id == 'region') {
+            //     document.getElementById('algolia-doc-search').value = ""
+            // } else if (city == 0 && street == 0 && house == 0 && _this.props.id == 'city') {
+            //     window.suggestion = window.region
+            // } else if ( street == 0 && house == 0 && _this.props.id == 'street') {
+            //     window.suggestion = window.city
+            // } else if (house == 0 && _this.props.id == 'house') {
+            //     window.suggestion = window.street
+            // } else {}
             _this.setState({ query: value, inputQuery: value, suggestionsVisible: true }, function () {
                 if (_this.props.validate) {
                     _this.props.validate(value);
@@ -83,30 +102,36 @@ var ReactDadata = /** @class */ (function (_super) {
             };
             // Checking for granular suggestions
             if (_this.props.fromBound && _this.props.toBound) {
+                var adress = window.suggestion
                 // When using granular suggestion, all dadata components have to receive address property that contains shared address info.
-                if (!_this.props.address) {
+                if (window.data_kladr.kladr_id) {
+                    requestPayload.locations = [{
+                        "kladr_id": window.data_kladr.kladr_id
+                    }]
+                }
+                if (!adress) {
                     throw new Error("You have to pass address property with DaData address object to connect separate components");
                 }
                 requestPayload.from_bound = { value: _this.props.fromBound };
                 requestPayload.to_bound = { value: _this.props.toBound };
                 requestPayload.restrict_value = true;
-                if (_this.props.address.data) {
-                    // Define location limitation
-                    var location_1 = {};
-                    if (_this.props.address.data.region_fias_id) {
-                        location_1.region_fias_id = _this.props.address.data.region_fias_id;
-                    }
-                    if (_this.props.address.data.city_fias_id) {
-                        location_1.city_fias_id = _this.props.address.data.city_fias_id;
-                    }
-                    if (_this.props.address.data.settlement_fias_id) {
-                        location_1.settlement_fias_id = _this.props.address.data.settlement_fias_id;
-                    }
-                    if (_this.props.address.data.street_fias_id) {
-                        location_1.street_fias_id = _this.props.address.data.street_fias_id;
-                    }
-                    requestPayload.locations = [location_1];
-                }
+                // if (adress.data) {
+                //     // Define location limitation
+                //     var location_1 = {};
+                //     if (adress.data.region_fias_id) {
+                //         location_1.region_fias_id = adress.data.region_fias_id;
+                //     }
+                //     if (adress.data.city_fias_id) {
+                //         location_1.city_fias_id = adress.data.city_fias_id;
+                //     }
+                //     if (adress.data.settlement_fias_id) {
+                //         location_1.settlement_fias_id = adress.data.settlement_fias_id;
+                //     }
+                //     if (adress.data.street_fias_id) {
+                //         location_1.street_fias_id = adress.data.street_fias_id;
+                //     }
+                //     requestPayload.locations = [location_1];
+                // }
             }
             _this.xhr.send(JSON.stringify(requestPayload));
             _this.xhr.onreadystatechange = function () {
@@ -172,13 +197,14 @@ var ReactDadata = /** @class */ (function (_super) {
     ;
     ReactDadata.prototype.render = function () {
         var _this = this;
-        var classNames = ['react-dadata__input'];
+        var classNames = [];
+        // var classNames = ['react-dadata__input'];
         if (this.props.className) {
             classNames.push(this.props.className);
         }
         return (React.createElement("div", { className: "react-dadata react-dadata__container" },
             React.createElement("div", null,
-                React.createElement("input", { className: classNames.join(' '), disabled: this.props.disabled, placeholder: this.props.placeholder ? this.props.placeholder : '', value: this.state.query, ref: function (input) { _this.textInput = input; }, onChange: this.onInputChange, onKeyPress: this.onKeyPress, onKeyDown: this.onKeyPress, onFocus: this.onInputFocus, onBlur: this.onInputBlur, validate: this.props.validate, autoComplete: this.props.autocomplete ? this.props.autocomplete : 'off' })),
+                React.createElement("input", { id: _this.props.id,className: classNames.join(' '), style: {backgroundColor: 'transparent', zIndex: 1},disabled: this.props.disabled, placeholder: this.props.placeholder ? this.props.placeholder : '', value: this.state.query, ref: function (input) { _this.textInput = input; }, onChange: this.onInputChange, onKeyPress: this.onKeyPress, onKeyDown: this.onKeyPress, onFocus: this.onInputFocus, onBlur: this.onInputBlur, validate: this.props.validate, autoComplete: this.props.autocomplete ? this.props.autocomplete : 'off' })),
             this.state.inputFocused && this.state.suggestionsVisible && this.state.suggestions && this.state.suggestions.length > 0 && React.createElement("div", { className: "react-dadata__suggestions" },
                 React.createElement("div", { className: "react-dadata__suggestion-note" }, "\u0412\u044B\u0431\u0435\u0440\u0438\u0442\u0435 \u0432\u0430\u0440\u0438\u0430\u043D\u0442 \u0438\u043B\u0438 \u043F\u0440\u043E\u0434\u043E\u043B\u0436\u0438\u0442\u0435 \u0432\u0432\u043E\u0434"),
                 this.state.suggestions.map(function (suggestion, index) {
