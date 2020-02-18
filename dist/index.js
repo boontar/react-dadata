@@ -30,8 +30,15 @@ var ReactDadata = /** @class */ (function (_super) {
             }
         };
         _this.onInputBlur = function () {
-            _this.setState({ inputFocused: false });
+            if (_this.props.necessarily) {
+                if (_this.state.suggestions.length > 0) {
+                    if (_this.state.suggestionsVisible == false) {
+                        _this.props.canOut(true)
+                    } else _this.props.canOut(false)
+                }
+            } else _this.setState({ inputFocused: false });
             if (_this.state.suggestions.length == 0) {
+                _this.props.canOut(true)
                 _this.fetchSuggestions();
             }
             if (_this.props.onBlur) {
