@@ -99,6 +99,7 @@ export declare namespace ReactDadata {
         onBlur?: () => void;
         onFocus?: () => void;
         validate?: (value: string) => void;
+        canOut?: (value: string) => void;
         className?: string;
         disabled?: boolean;
         fromBound?: BoundsType;
@@ -107,6 +108,7 @@ export declare namespace ReactDadata {
         _toBound: string;
         id: string;
         address?: DadataSuggestion;
+        necessarily: boolean;
     }
     interface State {
         query: string;
