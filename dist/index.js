@@ -46,6 +46,9 @@ var ReactDadata = /** @class */ (function (_super) {
             }
         };
         _this.onInputChange = function (event) {
+            if (window.clear_dadata) {
+                window.clear_dadata = false
+            }
             var value = event.target.value;
             // var region = document.getElementById('region').value.length
             // var city = document.getElementById('city').value.length
@@ -211,7 +214,7 @@ var ReactDadata = /** @class */ (function (_super) {
         }
         return (React.createElement("div", { className: "react-dadata react-dadata__container" },
             React.createElement("div", null,
-                React.createElement("input", { id: _this.props.id,className: classNames.join(' '), style: {backgroundColor: 'transparent', zIndex: 1},disabled: this.props.disabled, placeholder: this.props.placeholder ? this.props.placeholder : '', value: this.state.query, ref: function (input) { _this.textInput = input; }, onChange: this.onInputChange, onKeyPress: this.onKeyPress, onKeyDown: this.onKeyPress, onFocus: this.onInputFocus, onBlur: this.onInputBlur, validate: this.props.validate, autoComplete: this.props.autocomplete ? this.props.autocomplete : 'off' })),
+                React.createElement("input", { id: _this.props.id,className: classNames.join(' '), style: {backgroundColor: 'transparent', zIndex: 1},disabled: this.props.disabled, placeholder: this.props.placeholder ? this.props.placeholder : '', value: (window.clear_dadata) ? '' : this.state.query, ref: function (input) { _this.textInput = input; }, onChange: this.onInputChange, onKeyPress: this.onKeyPress, onKeyDown: this.onKeyPress, onFocus: this.onInputFocus, onBlur: this.onInputBlur, validate: this.props.validate, autoComplete: this.props.autocomplete ? this.props.autocomplete : 'off' })),
             this.state.inputFocused && this.state.suggestionsVisible && this.state.suggestions && this.state.suggestions.length > 0 && React.createElement("div", { className: "react-dadata__suggestions" },
                 React.createElement("div", { className: "react-dadata__suggestion-note" }, "\u0412\u044B\u0431\u0435\u0440\u0438\u0442\u0435 \u0432\u0430\u0440\u0438\u0430\u043D\u0442 \u0438\u043B\u0438 \u043F\u0440\u043E\u0434\u043E\u043B\u0436\u0438\u0442\u0435 \u0432\u0432\u043E\u0434"),
                 this.state.suggestions.map(function (suggestion, index) {
